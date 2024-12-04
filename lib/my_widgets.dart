@@ -9,16 +9,12 @@ class MyWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
+    //Size size = MediaQuery.of(context).size;
 
-    bool isAndroid = Platform.isAndroid;
+    //bool isAndroid = Platform.isAndroid;
 
     return MaterialApp(
       home: Scaffold(
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {},
-          child: const Icon(Icons.add),
-        ),
         appBar: AppBar(
           title: Text(
             titulo,
@@ -28,7 +24,11 @@ class MyWidget extends StatelessWidget {
           leading: const Icon(Icons.menu),
           actions: const [FlutterLogo()],
         ),
-/*         body: const Column(
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {},
+          child: const Icon(Icons.add),
+        ),
+        /* body: const Column(
           children: [
             Text(
               "Texto de ejemplo",
@@ -49,7 +49,7 @@ class MyWidget extends StatelessWidget {
             ),
           ],
         ), */
-        body: SizedBox(
+        /* body: SizedBox(
           width: size.width,
           height: size.height,
           child: Stack(
@@ -61,7 +61,8 @@ class MyWidget extends StatelessWidget {
               ),
             ],
           ),
-        ),
+        ), */
+        body: const MisWidgets(),
       ),
     );
   }
@@ -74,4 +75,100 @@ class MyWidget extends StatelessWidget {
   }
 }
 
-//FloatingActionButtonPersonalizado
+// FloatingActionButtonPersonalizado
+Widget myButtonFloating() {
+  return FloatingActionButton(
+    onPressed: () {},
+    child: const Icon(Icons.add),
+  );
+}
+
+class MisWidgets extends StatelessWidget {
+  const MisWidgets({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      padding: const EdgeInsets.all(16),
+      children: [
+        const Text("Mis Widgets Básicos"),
+        Wrap(
+          spacing: 8,
+          children: [
+            ElevatedButton(
+              onPressed: () {},
+              child: const Text("ElevatedButton"),
+            ),
+            const SizedBox(
+              width: 8,
+            ),
+            OutlinedButton(
+              onPressed: () {},
+              child: const Text("OutlinedButton"),
+            ),
+            IconButton(
+              onPressed: () {},
+              icon: const Icon(Icons.headphones),
+            ),
+          ],
+        ),
+        Container(
+          color: Colors.yellow,
+          width: 200,
+          height: 180,
+          child: Image.network(
+            "https://storage.googleapis.com/cms-storage-bucket/d83012c34a8f88a64e2b.jpg",
+            fit: BoxFit.cover,
+          ),
+        ),
+        Container(
+          color: Colors.yellow,
+          width: 200,
+          height: 180,
+          child: Image.asset(
+            "assets/img/bird.jpg",
+            fit: BoxFit.cover,
+          ),
+        ),
+        const SizedBox(height: 16),
+        Center(
+          child: GestureDetector(
+            onTap: () => print("Se presiona el boton"),
+            child: Container(
+              height: 64,
+              width: 64,
+              decoration: BoxDecoration(
+                color: Colors.blue,
+                borderRadius: BorderRadius.circular(16),
+                boxShadow: const [
+                  BoxShadow(
+                    color: Colors.grey,
+                    offset: Offset(0, 2),
+                    blurRadius: 4,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+        Column(
+          children: [
+            ElevatedButton(
+              onPressed: () {},
+              child: const Text("ElevatedButton"),
+            ),
+            OutlinedButton(
+              onPressed: () {},
+              child: const Text("OutlinedButton"),
+            ),
+            IconButton(
+              onPressed: () {},
+              icon: const Icon(Icons.headphones),
+            ),
+          ],
+        ),
+        const SizedBox(height: 200),
+      ],
+    );
+  }
+}
