@@ -49,7 +49,7 @@ void variables() {
   bool esEstudiante = true;
   String nombre = "Sofia";
 
-  String _nombre =
+  String nombre0 =
       "Sofia"; //Al usar un _ dart la reconoce automaticamente como privada.
 
   print(ciudad);
