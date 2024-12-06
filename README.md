@@ -181,7 +181,6 @@ El archivo `fundamentos.dart` incluye conceptos básicos de Dart como variables,
 <summary><code>Widgets</code></summary>
 
 ```js
-```dart
 // This is a basic Flutter widget test.
 //
 // To perform an interaction with a widget in your test, use the WidgetTester
@@ -407,7 +406,6 @@ void main() {
 <summary><code>Menú</code></summary>
 
 ```js
-```dart
 import 'package:flutter/material.dart';
 
 class Menu extends StatelessWidget {
