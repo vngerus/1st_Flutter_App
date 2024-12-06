@@ -181,35 +181,180 @@ El archivo `fundamentos.dart` incluye conceptos básicos de Dart como variables,
 <summary><code>Widgets</code></summary>
 
 ```js
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
 
 import 'package:flutter/material.dart';
-import 'package:flutter_test/flutter_test.dart';
 
+class MyWidget extends StatelessWidget {
+  const MyWidget({super.key});
 
-void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+  final String titulo = "Widgets Flutter";
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+  @override
+  Widget build(BuildContext context) {
+    //Size size = MediaQuery.of(context).size;
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+    //bool isAndroid = Platform.isAndroid;
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
-  });
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text(
+            titulo,
+            style: const TextStyle(fontWeight: FontWeight.w800),
+          ),
+          centerTitle: true,
+          leading: const Icon(Icons.menu),
+          actions: const [FlutterLogo()],
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {},
+          child: const Icon(Icons.add),
+        ),
+        /* body: const Column(
+          children: [
+            Text(
+              "Texto de ejemplo",
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w500,
+                letterSpacing: 2,
+                color: Color(0xFFFF9005),
+              ),
+            ),
+            Text(
+              "Texto de ejemplo",
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w900,
+                letterSpacing: 2,
+              ),
+            ),
+          ],
+        ), */
+        /* body: SizedBox(
+          width: size.width,
+          height: size.height,
+          child: Stack(
+            children: [
+              Positioned(
+                left: 16,
+                bottom: isAndroid ? 16 : 50,
+                child: myButtonFloating(),
+              ),
+            ],
+          ),
+        ), */
+        body: const MisWidgets(),
+      ),
+    );
+  }
+
+  Widget myButtonFloating() {
+    return FloatingActionButton(
+      onPressed: () {},
+      child: const Icon(Icons.add),
+    );
+  }
 }
+
+// FloatingActionButtonPersonalizado
+Widget myButtonFloating() {
+  return FloatingActionButton(
+    onPressed: () {},
+    child: const Icon(Icons.add),
+  );
+}
+
+class MisWidgets extends StatelessWidget {
+  const MisWidgets({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      padding: const EdgeInsets.all(16),
+      children: [
+        const Text("Mis Widgets Básicos"),
+        Wrap(
+          spacing: 8,
+          children: [
+            ElevatedButton(
+              onPressed: () {},
+              child: const Text("ElevatedButton"),
+            ),
+            const SizedBox(
+              width: 8,
+            ),
+            OutlinedButton(
+              onPressed: () {},
+              child: const Text("OutlinedButton"),
+            ),
+            IconButton(
+              onPressed: () {},
+              icon: const Icon(Icons.headphones),
+            ),
+          ],
+        ),
+        Container(
+          color: Colors.yellow,
+          width: 200,
+          height: 180,
+          child: Image.network(
+            "https://storage.googleapis.com/cms-storage-bucket/d83012c34a8f88a64e2b.jpg",
+            fit: BoxFit.cover,
+          ),
+        ),
+        Container(
+          color: Colors.yellow,
+          width: 200,
+          height: 180,
+          child: Image.asset(
+            "assets/img/bird.jpg",
+            fit: BoxFit.cover,
+          ),
+        ),
+        const SizedBox(height: 16),
+        Center(
+          child: GestureDetector(
+            onTap: () => print("Se presiona el boton"),
+            child: Container(
+              height: 64,
+              width: 64,
+              decoration: BoxDecoration(
+                color: Colors.blue,
+                borderRadius: BorderRadius.circular(16),
+                boxShadow: const [
+                  BoxShadow(
+                    color: Colors.grey,
+                    offset: Offset(0, 2),
+                    blurRadius: 4,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+        Column(
+          children: [
+            ElevatedButton(
+              onPressed: () {},
+              child: const Text("ElevatedButton"),
+            ),
+            OutlinedButton(
+              onPressed: () {},
+              child: const Text("OutlinedButton"),
+            ),
+            IconButton(
+              onPressed: () {},
+              icon: const Icon(Icons.headphones),
+            ),
+          ],
+        ),
+        const SizedBox(height: 200),
+      ],
+    );
+  }
+}
+
 
 ```
 </details>
