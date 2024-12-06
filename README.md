@@ -16,8 +16,10 @@ Este repositorio contiene una serie de ejemplos y ejercicios prácticos para apr
 ---
 
 ## Fundamentos de Dart
+<details>
+<summary><code>Fundamentos</code></summary>
 
-```dart
+```js
 void main() {
   //print("hola mundo");
   //variables();
@@ -163,8 +165,9 @@ Future<String> obtenerClima() async {
   print(datosClima);
   return datosClima;
 }
-
 ```
+
+</details>
 
 ### Explicación
 
@@ -174,6 +177,10 @@ El archivo `fundamentos.dart` incluye conceptos básicos de Dart como variables,
 
 ## Widgets Personalizados
 
+<details>
+<summary><code>Widgets</code></summary>
+
+```js
 ```dart
 // This is a basic Flutter widget test.
 //
@@ -206,6 +213,7 @@ void main() {
 }
 
 ```
+</details>
 
 ### Explicación
 
@@ -215,7 +223,10 @@ En este archivo (`my_widgets.dart`), se exploran widgets básicos como `Elevated
 
 ## Gestión de Estados
 
-```dart
+<details>
+<summary><code>Estados</code></summary>
+
+```js
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
@@ -284,6 +295,7 @@ class _EstadosState extends State<Estados> {
 }
 
 ```
+</details>
 
 ### Explicación
 
@@ -293,7 +305,10 @@ Este ejemplo (`estados.dart`) muestra cómo gestionar el estado de los widgets e
 
 ## Calculadora Básica
 
-```dart
+<details>
+<summary><code>Calculadora</code></summary>
+
+```js
 import 'dart:io';
 
 void main() {
@@ -356,6 +371,7 @@ double multiplicacion(double a, double b) => a * b;
 double division(double a, double b) => a / b;
 
 ```
+</details>
 
 ### Explicación
 
@@ -367,7 +383,10 @@ El archivo `calculadora.dart` implementa una calculadora de consola que permite 
 
 ### main.dart
 
-```dart
+<details>
+<summary><code>Navegación</code></summary>
+
+```js
 import 'package:firstflutterapp/menu.dart';
 import 'package:flutter/material.dart';
 
@@ -380,9 +399,14 @@ void main() {
 }
 
 ```
+</details>
 
 ### menu.dart
 
+<details>
+<summary><code>Menú</code></summary>
+
+```js
 ```dart
 import 'package:flutter/material.dart';
 
@@ -424,10 +448,14 @@ class Menu extends StatelessWidget {
 }
 
 ```
+</details>
 
 ### page1.dart
 
-```dart
+<details>
+<summary><code>Page 1</code></summary>
+
+```js
 import 'package:firstflutterapp/clases/nav/page2.dart';
 import 'package:flutter/material.dart';
 
@@ -459,10 +487,14 @@ class Page1 extends StatelessWidget {
 }
 
 ```
+</details>
 
 ### page2.dart
 
-```dart
+<details>
+<summary><code>Page 2</code></summary>
+
+```js
 import 'package:flutter/material.dart';
 
 class Page2 extends StatelessWidget {
@@ -488,6 +520,7 @@ class Page2 extends StatelessWidget {
 }
 
 ```
+</details>
 
 ### Explicación
 
