@@ -1,3 +1,4 @@
+import 'package:firstflutterapp/home_hab.dart';
 import 'package:flutter/material.dart';
 
 class Menu extends StatelessWidget {
@@ -11,7 +12,14 @@ class Menu extends StatelessWidget {
           padding: const EdgeInsets.all(32),
           children: [
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => HomeHabitosPage(),
+                  ),
+                );
+              },
               child: const Text("Gestor de Habitos"),
             ),
             ElevatedButton(
