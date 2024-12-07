@@ -11,7 +11,7 @@ Este repositorio contiene una serie de ejemplos y ejercicios prácticos para apr
 3. [Gestión de Estados](#gestión-de-estados)
 4. [Calculadora Básica](#calculadora-básica)
 5. [Navegación en Flutter](#navegación-en-flutter)
-6. [Habitos en Flutter] (#habitos-en-flutter)
+6. [Habitos en Flutter](#habitos-en-flutter)
 7. [Comandos Útiles de Flutter](#comandos-útiles-de-flutter)
 
 ---
