@@ -15,3 +15,10 @@
 - Pantalla Principal
 - Pantalla de agregar hábito
 - Pantalla historial
+
+## TIPS
+
+- StatelessWidget -> StatefulWidget
+- ListView.builder
+
+- ListTile (utilizar los valores de la lista "habits")
