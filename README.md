@@ -11,11 +11,13 @@ Este repositorio contiene una serie de ejemplos y ejercicios prácticos para apr
 3. [Gestión de Estados](#gestión-de-estados)
 4. [Calculadora Básica](#calculadora-básica)
 5. [Navegación en Flutter](#navegación-en-flutter)
-6. [Comandos Útiles de Flutter](#comandos-útiles-de-flutter)
+6. [Habitos en Flutter] (#habitos-en-flutter)
+7. [Comandos Útiles de Flutter](#comandos-útiles-de-flutter)
 
 ---
 
 ## Fundamentos de Dart
+
 <details>
 <summary><code>Fundamentos</code></summary>
 
@@ -357,6 +359,7 @@ class MisWidgets extends StatelessWidget {
 
 
 ```
+
 </details>
 
 ### Explicación
@@ -439,6 +442,7 @@ class _EstadosState extends State<Estados> {
 }
 
 ```
+
 </details>
 
 ### Explicación
@@ -515,6 +519,7 @@ double multiplicacion(double a, double b) => a * b;
 double division(double a, double b) => a / b;
 
 ```
+
 </details>
 
 ### Explicación
@@ -543,6 +548,7 @@ void main() {
 }
 
 ```
+
 </details>
 
 ### menu.dart
@@ -591,6 +597,7 @@ class Menu extends StatelessWidget {
 }
 
 ```
+
 </details>
 
 ### page1.dart
@@ -630,6 +637,7 @@ class Page1 extends StatelessWidget {
 }
 
 ```
+
 </details>
 
 ### page2.dart
@@ -663,6 +671,175 @@ class Page2 extends StatelessWidget {
 }
 
 ```
+
+</details>
+
+### Habitos en Flutter
+
+<details>
+<summary><code>Home_hab.dart</code></summary>
+
+```js
+import 'dart:developer';
+import 'package:firstflutterapp/new_habit.dart';
+import 'package:flutter/material.dart';
+
+class HomeHabitosPage extends StatefulWidget {
+  const HomeHabitosPage({super.key});
+
+  @override
+  State<HomeHabitosPage> createState() => _HomeHabitosPageState();
+}
+
+class _HomeHabitosPageState extends State<HomeHabitosPage> {
+  final List<Habit> habits = [];
+
+  // Escritura de datos
+  // Lectura de datos
+  // InitStte -> leer si tenemos información almacenada
+
+  void _addHabit(String name, String desc) {
+    setState(() {
+      habits.add(Habit(name: name, description: desc));
+    });
+    log(habits.toString());
+  }
+
+  void changeStatus(int i) {
+    setState(() {
+      habits[i].isComplete = !habits[i].isComplete;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Gestor de hábitos"),
+      ),
+      body: Center(
+        child: ListView.builder(
+          itemCount: habits.length,
+          itemBuilder: (context, i) {
+            String name = habits[i].name;
+            String desc = habits[i].description;
+            bool isComplete = habits[i].isComplete;
+
+            return ListTile(
+              onTap: () => changeStatus(i),
+              title: Text(name),
+              subtitle: Text(desc),
+              trailing: isComplete
+                  ? const Icon(Icons.check_circle, color: Colors.green)
+                  : const Icon(Icons.circle_outlined),
+            );
+          },
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => NewHabit(
+                submitHabit: _addHabit,
+              ),
+            ),
+          );
+        },
+        child: const Icon(Icons.add),
+      ),
+    );
+  }
+}
+
+class Habit {
+  String name;
+  String description;
+  bool isComplete;
+
+  Habit({
+    required this.name,
+    required this.description,
+    this.isComplete = false,
+  });
+
+  @override
+  String toString() {
+    return "name: $name, description: $description, isComplete: $isComplete";
+  }
+}
+
+```
+
+</details>
+
+<details>
+<summary><code>New_habit.dart</code></summary>
+
+```js
+import 'package:flutter/material.dart';
+
+class NewHabit extends StatefulWidget {
+  final Function(String, String) submitHabit;
+
+  const NewHabit({super.key, required this.submitHabit});
+
+  @override
+  State<NewHabit> createState() => _NewHabitState();
+}
+
+class _NewHabitState extends State<NewHabit> {
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _desController = TextEditingController();
+
+  void submit() {
+    final name = _nameController.text;
+    final desc = _desController.text;
+
+    if (name.isNotEmpty && desc.isNotEmpty) {
+      widget.submitHabit(name, desc);
+      Navigator.pop(context);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Nuevo hábito"),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          children: [
+            TextField(
+              controller: _nameController,
+              decoration: const InputDecoration(
+                labelText: "Nombre del hábito",
+              ),
+            ),
+            TextField(
+              controller: _desController,
+              decoration: const InputDecoration(
+                labelText: "Descripción",
+              ),
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: submit,
+              child: const Text("Añadir"),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+
+```
+
 </details>
 
 ### Explicación
