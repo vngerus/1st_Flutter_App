@@ -1,6 +1,8 @@
 import 'dart:developer';
-import 'package:firstflutterapp/new_habit.dart';
+
 import 'package:flutter/material.dart';
+import 'package:mi_primera_app/gestor-habitos/new_habit.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeHabitosPage extends StatefulWidget {
   const HomeHabitosPage({super.key});
@@ -11,17 +13,46 @@ class HomeHabitosPage extends StatefulWidget {
 
 class _HomeHabitosPageState extends State<HomeHabitosPage> {
   final List<Habit> habits = [];
+  late final SharedPreferences prefs;
+
+  // Escritura de datos
+  // Lectura de datos
+  // initState -> leer si tenemos informacion almacenada
+
+  @override
+  void initState() {
+    super.initState();
+    initShared();
+  }
+
+  initShared() async {
+    prefs = await SharedPreferences.getInstance();
+  }
+
+  saveData() async {
+    await prefs.setString('test', 'Test 1');
+    getData();
+  }
+
+  getData() {
+    String? action = prefs.getString('test');
+    log(action!);
+  }
 
   void _addHabit(String name, String desc) {
     setState(() {
-      habits.add(Habit(name: name, description: desc));
+      habits.add(
+        Habit(
+          name: name,
+          description: desc,
+        ),
+      );
     });
-    log(habits.toString());
   }
 
-  void changeStatus(int i) {
+  void changeStatus(int index) {
     setState(() {
-      habits[i].isComplete = !habits[i].isComplete;
+      habits[index].isComplete = !habits[index].isComplete;
     });
   }
 
@@ -29,39 +60,56 @@ class _HomeHabitosPageState extends State<HomeHabitosPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Gestor de hábitos"),
+        title: const Text("Gestor de habitos"),
       ),
-      body: Center(
-        child: ListView.builder(
-          itemCount: habits.length,
-          itemBuilder: (context, i) {
-            String name = habits[i].name;
-            String desc = habits[i].description;
-            bool isComplete = habits[i].isComplete;
+      body: ListView.builder(
+        itemCount: habits.length,
+        itemBuilder: (context, index) {
+          String _name = habits[index].name;
+          String _desc = habits[index].description;
+          bool _isComplete = habits[index].isComplete;
 
-            return ListTile(
-              onTap: () => changeStatus(i),
-              title: Text(name),
-              subtitle: Text(desc),
-              trailing: isComplete
-                  ? const Icon(Icons.check_circle, color: Colors.green)
-                  : const Icon(Icons.circle_outlined),
-            );
-          },
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => NewHabit(
-                submitHabit: _addHabit,
-              ),
-            ),
+          return ListTile(
+            onTap: () {
+              changeStatus(index);
+            },
+            title: Text(_name),
+            subtitle: Text(_desc),
+            trailing: _isComplete
+                ? const Icon(
+                    Icons.check_circle,
+                    color: Colors.green,
+                  )
+                : const Icon(Icons.circle_outlined),
           );
         },
-        child: const Icon(Icons.add),
+      ),
+      floatingActionButton: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          FloatingActionButton(
+            heroTag: "floating-1",
+            onPressed: () {
+              saveData();
+            },
+            child: const Icon(Icons.save),
+          ),
+          const SizedBox(height: 8),
+          FloatingActionButton(
+            heroTag: "floating-2",
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => NewHabit(
+                    submitHabit: _addHabit,
+                  ),
+                ),
+              );
+            },
+            child: const Icon(Icons.add),
+          )
+        ],
       ),
     );
   }
