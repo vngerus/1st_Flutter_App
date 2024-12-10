@@ -1,4 +1,5 @@
 import 'package:firstflutterapp/bdd/indata.dart';
+import 'package:firstflutterapp/galeria_imgs/galeria_imgs.dart';
 import 'package:firstflutterapp/home_hab.dart';
 import 'package:flutter/material.dart';
 
@@ -32,11 +33,18 @@ class Menu extends StatelessWidget {
                   ),
                 );
               },
-              child: const Text("Widget de entrada de Data"),
+              child: const Text("Widgets de entrada de datos"),
             ),
             ElevatedButton(
-              onPressed: () {},
-              child: const Text("Galería de Imágenes"),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => GaleriaImgs(),
+                  ),
+                );
+              },
+              child: const Text("Galeria de imágenes"),
             ),
             ElevatedButton(
               onPressed: () {},
