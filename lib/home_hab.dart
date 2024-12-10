@@ -1,7 +1,7 @@
 import 'dart:developer';
 
+import 'package:firstflutterapp/new_habit.dart';
 import 'package:flutter/material.dart';
-import 'package:mi_primera_app/gestor-habitos/new_habit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeHabitosPage extends StatefulWidget {
@@ -14,6 +14,7 @@ class HomeHabitosPage extends StatefulWidget {
 class _HomeHabitosPageState extends State<HomeHabitosPage> {
   final List<Habit> habits = [];
   late final SharedPreferences prefs;
+  String? action;
 
   // Escritura de datos
   // Lectura de datos
@@ -27,15 +28,18 @@ class _HomeHabitosPageState extends State<HomeHabitosPage> {
 
   initShared() async {
     prefs = await SharedPreferences.getInstance();
+    getData();
   }
 
   saveData() async {
-    await prefs.setString('test', 'Test 1');
+    await prefs.setString('test', 'Test 2');
     getData();
   }
 
   getData() {
-    String? action = prefs.getString('test');
+    setState(() {
+      action = prefs.getString('test') ?? "Sin data";
+    });
     log(action!);
   }
 
@@ -60,18 +64,18 @@ class _HomeHabitosPageState extends State<HomeHabitosPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Gestor de habitos"),
+        title: Text("Gestor de habitos ($action)"),
       ),
       body: ListView.builder(
         itemCount: habits.length,
-        itemBuilder: (context, index) {
-          String _name = habits[index].name;
-          String _desc = habits[index].description;
-          bool _isComplete = habits[index].isComplete;
+        itemBuilder: (context, i) {
+          String _name = habits[i].name;
+          String _desc = habits[i].description;
+          bool _isComplete = habits[i].isComplete;
 
           return ListTile(
             onTap: () {
-              changeStatus(index);
+              changeStatus(i);
             },
             title: Text(_name),
             subtitle: Text(_desc),
