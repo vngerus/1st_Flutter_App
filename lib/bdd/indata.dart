@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:developer';
 
 class InData extends StatefulWidget {
   const InData({super.key});
@@ -8,15 +9,8 @@ class InData extends StatefulWidget {
 }
 
 class _InDataState extends State<InData> {
-  bool isChecked = false;
-  int selectedRadio = 1;
-  final Map<int, bool> switches = {1: false, 2: true};
-
-  void toggleSwitch(int key, bool value) {
-    setState(() {
-      switches[key] = value;
-    });
-  }
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  bool _checkValue = true;
 
   @override
   Widget build(BuildContext context) {
@@ -26,37 +20,73 @@ class _InDataState extends State<InData> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            const TextField(
-              decoration: InputDecoration(
-                labelText: "Nombre",
-                border: OutlineInputBorder(),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              TextFormField(
+                decoration: const InputDecoration(labelText: "Nombre"),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return "El campo del nombre es obligatorio";
+                  }
+                  return null;
+                },
               ),
-            ),
-            Checkbox(
-              value: isChecked,
-              onChanged: (value) => setState(() => isChecked = value!),
-            ),
-            Column(
-              children: [1, 2].map((value) {
-                return Radio<int>(
-                  value: value,
-                  groupValue: selectedRadio,
-                  onChanged: (newValue) =>
-                      setState(() => selectedRadio = newValue!),
-                );
-              }).toList(),
-            ),
-            Column(
-              children: switches.entries.map((entry) {
-                return Switch(
-                  value: entry.value,
-                  onChanged: (value) => toggleSwitch(entry.key, value),
-                );
-              }).toList(),
-            ),
-          ],
+              const SizedBox(height: 20),
+              CheckboxListTile(
+                value: _checkValue,
+                onChanged: (bool? value) {
+                  setState(() {
+                    _checkValue = value!;
+                  });
+                },
+                title: const Text("Acepto los términos y condiciones"),
+              ),
+              const SizedBox(height: 40),
+              /*
+              const TextField(
+                decoration: InputDecoration(
+                  labelText: "Nombre",
+                  border: OutlineInputBorder(),
+                ),
+              ),
+              */
+              // MyCheckbox(),
+              // onChanged: (bool? value) {
+              //   setState(() {
+              //     _checkValue = value!;
+              //   });
+              // },
+              // checkValue: _checkValue,
+              // ),
+              // Radio<int>(
+              //   value: 1,
+              //   groupValue: 1,
+              //   onChanged: (int? value) {},
+              // ),
+              // Radio<int>(
+              //   value: 2,
+              //   groupValue: 1,
+              //   onChanged: (int? value) {},
+              // ),
+              // Switch(
+              //   value: true,
+              //   onChanged: (bool value) {},
+              // ),
+
+              ElevatedButton(
+                onPressed: _checkValue
+                    ? () {
+                        if (_formKey.currentState!.validate()) {
+                          Navigator.pop(context);
+                        }
+                      }
+                    : null,
+                child: const Text("Enviar"),
+              ),
+            ],
+          ),
         ),
       ),
     );
