@@ -115,39 +115,48 @@ class _AudioPlayerPageState extends State<AudioPlayerPage> {
     );
   }
 
-  Widget songInfo() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+  songInfo() {
+    bool isFavorite = false;
+    return StatefulBuilder(
+      builder: (context, setState) {
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Text(
-              'Meowsorder',
-              style: TextStyle(
-                fontSize: 24,
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-              ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'Meowsorder',
+                  style: TextStyle(
+                    fontSize: 24,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                const Text(
+                  'Meow Catvision',
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.grey,
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(height: 4),
-            const Text(
-              'Meow Catvision',
-              style: TextStyle(
-                fontSize: 16,
-                color: Colors.grey,
+            IconButton(
+              onPressed: () {
+                setState(() {
+                  isFavorite = !isFavorite;
+                });
+              },
+              icon: Icon(
+                isFavorite ? Icons.favorite : Icons.favorite_border,
+                color: isFavorite ? Color(0xFFBB86FC) : Colors.white,
               ),
             ),
           ],
-        ),
-        IconButton(
-          onPressed: () {},
-          icon: const Icon(
-            Icons.favorite_border,
-            color: Colors.white,
-          ),
-        ),
-      ],
+        );
+      },
     );
   }
 
