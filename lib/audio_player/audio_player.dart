@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:audioplayers/audioplayers.dart';
 
 class AudioPlayerPage extends StatefulWidget {
   const AudioPlayerPage({super.key});
@@ -8,25 +9,55 @@ class AudioPlayerPage extends StatefulWidget {
 }
 
 class _AudioPlayerPageState extends State<AudioPlayerPage> {
+  final AudioPlayer _audioPlayer = AudioPlayer();
+  bool isPlaying = false;
+  Duration currentPosition = Duration.zero;
+  Duration totalDuration = Duration.zero;
+  bool isExpanded = false;
+
   @override
   void initState() {
     super.initState();
+    _audioPlayer.onPositionChanged.listen((position) {
+      setState(() {
+        currentPosition = position;
+      });
+    });
+
+    _audioPlayer.onDurationChanged.listen((duration) {
+      setState(() {
+        totalDuration = duration;
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    _audioPlayer.dispose();
+    super.dispose();
+  }
+
+  void _togglePlayPause() async {
+    if (isPlaying) {
+      await _audioPlayer.pause();
+    } else {
+      await _audioPlayer.play(AssetSource('mp3/disorder.mp3'));
+    }
+    setState(() {
+      isPlaying = !isPlaying;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-
-    double imgHeight = size.height * .45;
+    double imgHeight = size.height * .4;
 
     return Scaffold(
       backgroundColor: const Color(0xFF13122B),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.only(
-            left: 16,
-            right: 16,
-          ),
+          padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Column(
             children: [
               const SizedBox(height: 70),
@@ -73,9 +104,10 @@ class _AudioPlayerPageState extends State<AudioPlayerPage> {
               ),
               const SizedBox(height: 25),
               songInfo(),
+              const SizedBox(height: 10),
               audioControls(size),
               const SizedBox(height: 20),
-              lyricsInfo(),
+              lyricsInfo(size),
             ],
           ),
         ),
@@ -84,11 +116,11 @@ class _AudioPlayerPageState extends State<AudioPlayerPage> {
   }
 
   Widget songInfo() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
               'Meowsorder',
@@ -98,20 +130,20 @@ class _AudioPlayerPageState extends State<AudioPlayerPage> {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            IconButton(
-              onPressed: () {},
-              icon: const Icon(
-                Icons.favorite_border,
-                color: Colors.white,
+            const SizedBox(height: 4),
+            const Text(
+              'Meow Catvision',
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.grey,
               ),
             ),
           ],
         ),
-        const SizedBox(height: 1),
-        const Text(
-          'Meowdivision',
-          style: TextStyle(
-            fontSize: 16,
+        IconButton(
+          onPressed: () {},
+          icon: const Icon(
+            Icons.favorite_border,
             color: Colors.white,
           ),
         ),
@@ -120,108 +152,91 @@ class _AudioPlayerPageState extends State<AudioPlayerPage> {
   }
 
   Widget audioControls(Size size) {
-    double percentage = size.width * .4;
-
-    Widget timeSlider() {
-      return SizedBox(
-        width: size.width,
-        height: 10,
-        child: Stack(
-          alignment: AlignmentDirectional.centerStart,
-          children: [
-            Container(
-              width: size.width,
-              height: 4,
-              color: Colors.white,
-            ),
-            Container(
-              width: percentage,
-              height: 4,
-              color: const Color(0xFF643CEB),
-            ),
-            Positioned(
-              left: percentage,
-              child: Container(
-                width: 10,
-                height: 10,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border.all(
-                    color: const Color(0xFF643CEB),
-                  ),
-                  shape: BoxShape.circle,
-                ),
-              ),
-            ),
-          ],
-        ),
-      );
-    }
-
     return Column(
       children: [
-        Column(
-          children: [
-            timeSlider(),
-            const Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  "8:30",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 12,
-                  ),
-                ),
-                Text(
-                  "-2:30",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 12,
-                  ),
-                ),
-              ],
-            ),
-          ],
+        Slider(
+          value: currentPosition.inSeconds.toDouble(),
+          max: totalDuration.inSeconds.toDouble(),
+          activeColor: const Color(0xFFBB86FC),
+          inactiveColor: Colors.grey,
+          onChanged: (value) async {
+            final newPosition = Duration(seconds: value.toInt());
+            await _audioPlayer.seek(newPosition);
+            setState(() {
+              currentPosition = newPosition;
+            });
+          },
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Icon(
-              Icons.shuffle,
-              color: Colors.white,
-              size: 28,
+            Text(
+              _formatDuration(currentPosition),
+              style: const TextStyle(
+                color: Colors.grey,
+                fontSize: 12,
+              ),
             ),
-            Icon(
-              Icons.skip_previous_rounded,
-              color: Colors.white,
-              size: 28,
+            Text(
+              _formatDuration(totalDuration),
+              style: const TextStyle(
+                color: Colors.grey,
+                fontSize: 12,
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 20),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            IconButton(
+              onPressed: () {},
+              icon: const Icon(
+                Icons.shuffle,
+                color: Colors.white,
+                size: 28,
+              ),
+            ),
+            IconButton(
+              onPressed: () {},
+              icon: const Icon(
+                Icons.skip_previous_rounded,
+                color: Colors.white,
+                size: 36,
+              ),
             ),
             Container(
-              width: 50,
-              height: 50,
+              width: 60,
+              height: 60,
               decoration: BoxDecoration(
-                color: Colors.purple,
+                color: const Color(0xFFBB86FC),
                 shape: BoxShape.circle,
               ),
               child: IconButton(
-                onPressed: () async {},
-                icon: const Icon(
-                  Icons.pause,
+                onPressed: _togglePlayPause,
+                icon: Icon(
+                  isPlaying ? Icons.pause : Icons.play_arrow,
                   color: Colors.white,
-                  size: 28,
+                  size: 36,
                 ),
               ),
             ),
-            Icon(
-              Icons.skip_next_rounded,
-              color: Colors.white,
-              size: 28,
+            IconButton(
+              onPressed: () {},
+              icon: const Icon(
+                Icons.skip_next_rounded,
+                color: Colors.white,
+                size: 36,
+              ),
             ),
-            Icon(
-              Icons.repeat,
-              color: Colors.white,
-              size: 28,
+            IconButton(
+              onPressed: () {},
+              icon: const Icon(
+                Icons.repeat,
+                color: Colors.white,
+                size: 28,
+              ),
             ),
           ],
         ),
@@ -229,91 +244,98 @@ class _AudioPlayerPageState extends State<AudioPlayerPage> {
     );
   }
 
-  Widget lyricsInfo() {
+  String _formatDuration(Duration duration) {
+    String twoDigits(int n) => n.toString().padLeft(2, '0');
+    final minutes = twoDigits(duration.inMinutes.remainder(60));
+    final seconds = twoDigits(duration.inSeconds.remainder(60));
+    return "$minutes:$seconds";
+  }
+
+  Widget lyricsInfo(Size size) {
     return Container(
-      padding: const EdgeInsets.all(10),
+      width: size.width - 32,
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: const Color(0xFF302F42),
-        borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(12),
-          topRight: Radius.circular(12),
-        ),
+        borderRadius: BorderRadius.circular(12),
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text(
-                      'Lyrics',
-                      style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.white,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        IconButton(
-                          padding: EdgeInsets.zero,
-                          constraints: BoxConstraints(),
-                          onPressed: () {},
-                          icon: const Icon(
-                            Icons.open_in_new,
-                            color: Colors.white,
-                            size: 20,
-                          ),
-                        ),
-                        IconButton(
-                          padding: EdgeInsets.zero,
-                          constraints: BoxConstraints(),
-                          onPressed: () {},
-                          icon: const Icon(
-                            Icons.open_in_full,
-                            color: Colors.white,
-                            size: 20,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                'Lyrics',
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.white,
+                  fontWeight: FontWeight.w500,
                 ),
-                const SizedBox(height: 10),
-                RichText(
-                  text: const TextSpan(
-                    children: [
-                      TextSpan(
-                        text: "What means to you,\n",
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.grey,
-                        ),
-                      ),
-                      TextSpan(
-                        text: "what means to me\n",
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.white,
-                        ),
-                      ),
-                      TextSpan(
-                        text:
-                            "And we will meet again\nI'm watching you, I'm watching",
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.grey,
-                        ),
-                      ),
-                    ],
+              ),
+              Row(
+                children: [
+                  IconButton(
+                    onPressed: () {},
+                    icon: const Icon(
+                      Icons.open_in_new,
+                      color: Colors.white,
+                      size: 20,
+                    ),
                   ),
-                ),
-              ],
+                  IconButton(
+                    onPressed: () {
+                      setState(() {
+                        isExpanded = !isExpanded;
+                      });
+                    },
+                    icon: Icon(
+                      isExpanded ? Icons.close_fullscreen : Icons.open_in_full,
+                      color: Colors.white,
+                      size: 20,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          const SizedBox(height: 10),
+          AnimatedSize(
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeInOut,
+            child: RichText(
+              text: TextSpan(
+                children: [
+                  TextSpan(
+                    text:
+                        "I've been waiting for a guide to come and take me by the hand\n",
+                    style: const TextStyle(
+                      fontSize: 16,
+                      color: Colors.grey,
+                    ),
+                  ),
+                  TextSpan(
+                    text:
+                        "Could these sensations make me feel the pleasures of a normal man?\n",
+                    style: const TextStyle(
+                      fontSize: 16,
+                      color: Colors.white,
+                    ),
+                  ),
+                  TextSpan(
+                    text: isExpanded
+                        ? "Lose sensations, spare the insults, leave them for another day\n"
+                            "I've got the spirit, lose the feeling\n"
+                            "Take the shock away\n"
+                            "It's getting faster, moving faster now\n"
+                        : "Lose sensations, spare the insults...",
+                    style: const TextStyle(
+                      fontSize: 16,
+                      color: Colors.grey,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ],
