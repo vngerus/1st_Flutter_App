@@ -48,51 +48,62 @@ class _AudioPlayerPageState extends State<AudioPlayerPage> {
     });
   }
 
+  void _toggleLyricsExpansion() {
+    setState(() {
+      isExpanded = !isExpanded;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-    double imgHeight = size.height * .4;
+    final double appBarPosition = MediaQuery.of(context).size.height * 0.04;
+    final double imgHeight = MediaQuery.of(context).size.height * 0.45;
+    final double controlsPosition = MediaQuery.of(context).size.height * 0.02;
+    final double lyricsHeight =
+        isExpanded ? MediaQuery.of(context).size.height * 0.6 : 150;
 
     return Scaffold(
       backgroundColor: const Color(0xFF13122B),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Column(
+      body: Stack(
+        children: [
+          Column(
             children: [
-              const SizedBox(height: 70),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  IconButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    icon: const Icon(
-                      Icons.arrow_back_ios,
-                      color: Colors.white,
+              SizedBox(height: appBarPosition),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    IconButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      icon: const Icon(
+                        Icons.arrow_back_ios,
+                        color: Colors.white,
+                      ),
                     ),
-                  ),
-                  const Text(
-                    "Recently Played",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
+                    const Text(
+                      "Recently Played",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
-                  ),
-                  IconButton(
-                    onPressed: () {},
-                    icon: const Icon(
-                      Icons.more_horiz,
-                      color: Colors.white,
+                    IconButton(
+                      onPressed: () {},
+                      icon: const Icon(
+                        Icons.more_horiz,
+                        color: Colors.white,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
               const SizedBox(height: 20),
               Container(
-                width: size.width,
+                width: double.infinity,
                 height: imgHeight,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(16),
@@ -102,65 +113,79 @@ class _AudioPlayerPageState extends State<AudioPlayerPage> {
                   ),
                 ),
               ),
-              const SizedBox(height: 25),
-              songInfo(),
+              SizedBox(height: controlsPosition),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: songInfo(),
+              ),
               const SizedBox(height: 10),
-              audioControls(size),
-              const SizedBox(height: 20),
-              lyricsInfo(size),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: audioControls(),
+              ),
             ],
           ),
-        ),
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 300),
+              height: lyricsHeight,
+              decoration: BoxDecoration(
+                color: const Color(0xFF302F42),
+                borderRadius:
+                    const BorderRadius.vertical(top: Radius.circular(16)),
+              ),
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                child: lyricsInfo(),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
 
-  songInfo() {
-    bool isFavorite = false;
-    return StatefulBuilder(
-      builder: (context, setState) {
-        return Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  'Meowsorder',
-                  style: TextStyle(
-                    fontSize: 24,
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                const Text(
-                  'Meow Catvision',
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.grey,
-                  ),
-                ),
-              ],
+  Widget songInfo() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: const [
+            Text(
+              'Meowsorder',
+              style: TextStyle(
+                fontSize: 24,
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
             ),
-            IconButton(
-              onPressed: () {
-                setState(() {
-                  isFavorite = !isFavorite;
-                });
-              },
-              icon: Icon(
-                isFavorite ? Icons.favorite : Icons.favorite_border,
-                color: isFavorite ? Color(0xFFBB86FC) : Colors.white,
+            SizedBox(height: 4),
+            Text(
+              'Meow Catvision',
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.grey,
               ),
             ),
           ],
-        );
-      },
+        ),
+        IconButton(
+          onPressed: () {},
+          icon: const Icon(
+            Icons.favorite_border,
+            color: Colors.white,
+          ),
+        ),
+      ],
     );
   }
 
-  Widget audioControls(Size size) {
+  Widget audioControls() {
     return Column(
       children: [
         Slider(
@@ -195,7 +220,6 @@ class _AudioPlayerPageState extends State<AudioPlayerPage> {
             ),
           ],
         ),
-        const SizedBox(height: 20),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
@@ -260,95 +284,77 @@ class _AudioPlayerPageState extends State<AudioPlayerPage> {
     return "$minutes:$seconds";
   }
 
-  Widget lyricsInfo(Size size) {
-    return Container(
-      width: size.width - 32,
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: const Color(0xFF302F42),
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text(
-                'Lyrics',
-                style: TextStyle(
-                  fontSize: 20,
-                  color: Colors.white,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              Row(
-                children: [
-                  IconButton(
-                    onPressed: () {},
-                    icon: const Icon(
-                      Icons.open_in_new,
-                      color: Colors.white,
-                      size: 20,
-                    ),
-                  ),
-                  IconButton(
-                    onPressed: () {
-                      setState(() {
-                        isExpanded = !isExpanded;
-                      });
-                    },
-                    icon: Icon(
-                      isExpanded ? Icons.close_fullscreen : Icons.open_in_full,
-                      color: Colors.white,
-                      size: 20,
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-          const SizedBox(height: 10),
-          AnimatedSize(
-            duration: const Duration(milliseconds: 300),
-            curve: Curves.easeInOut,
-            child: RichText(
-              text: TextSpan(
-                children: [
-                  TextSpan(
-                    text:
-                        "I've been waiting for a guide to come and take me by the hand\n",
-                    style: const TextStyle(
-                      fontSize: 16,
-                      color: Colors.grey,
-                    ),
-                  ),
-                  TextSpan(
-                    text:
-                        "Could these sensations make me feel the pleasures of a normal man?\n",
-                    style: const TextStyle(
-                      fontSize: 16,
-                      color: Colors.white,
-                    ),
-                  ),
-                  TextSpan(
-                    text: isExpanded
-                        ? "Lose sensations, spare the insults, leave them for another day\n"
-                            "I've got the spirit, lose the feeling\n"
-                            "Take the shock away\n"
-                            "It's getting faster, moving faster now\n"
-                        : "Lose sensations, spare the insults...",
-                    style: const TextStyle(
-                      fontSize: 16,
-                      color: Colors.grey,
-                    ),
-                  ),
-                ],
+  Widget lyricsInfo() {
+    const List<String> lyrics = [
+      "Midnight",
+      "You come and pick me up, no headlights",
+      "Long drive, could end in burning flames or paradise",
+      "Fade into view, oh, it's been a while since I have even heard from you",
+    ];
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Text(
+              'Lyrics',
+              style: TextStyle(
+                fontSize: 20,
+                color: Colors.white,
+                fontWeight: FontWeight.w500,
               ),
             ),
+            Row(
+              children: [
+                IconButton(
+                  onPressed: () {},
+                  icon: const Icon(
+                    Icons.open_in_new,
+                    color: Colors.white,
+                    size: 20,
+                  ),
+                ),
+                IconButton(
+                  onPressed: _toggleLyricsExpansion,
+                  icon: Icon(
+                    isExpanded ? Icons.close_fullscreen : Icons.open_in_full,
+                    color: Colors.white,
+                    size: 20,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+        const SizedBox(height: 10),
+        Expanded(
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: lyrics
+                  .asMap()
+                  .entries
+                  .map(
+                    (entry) => Text(
+                      entry.value,
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: entry.key == 1 ? Colors.white : Colors.grey,
+                      ),
+                    ),
+                  )
+                  .toList(),
+            ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
+
+
+// Azul (fondo)   : 13122B
+// Morado / lila  : 643CEB
+// gris (lyric)   : 302F42
