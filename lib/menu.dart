@@ -59,6 +59,17 @@ class Menu extends StatelessWidget {
               child: const Text("Reproductor de Audio"),
             ),
             ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => AudioPlayerPage(),
+                  ),
+                );
+              },
+              child: const Text("Reproductor de Audio"),
+            ),
+            ElevatedButton(
               onPressed: () {},
               child: const Text("Todo - Provider"),
             ),
@@ -72,3 +83,5 @@ class Menu extends StatelessWidget {
     );
   }
 }
+
+class AudioPlayerPage2 {}
