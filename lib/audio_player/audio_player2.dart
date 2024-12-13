@@ -129,14 +129,12 @@ class AlbumPlayer extends StatelessWidget {
       color: Colors.black,
       child: Stack(
         children: [
-          // Filtros - 90
           Container(
             width: size.width,
             height: 90,
             color: Colors.redAccent,
             child: Filters(),
           ),
-          // Carrusel img
           Positioned(
             top: 90,
             child: SizedBox(
@@ -145,7 +143,6 @@ class AlbumPlayer extends StatelessWidget {
               child: carruselImages(context),
             ),
           ),
-          // Slider points - 40
           Positioned(
             bottom: 10,
             left: size.width * .25,
@@ -414,7 +411,6 @@ class ContinueWatching extends StatelessWidget {
               ],
             ),
           ),
-          // Eps
           Positioned(
             top: height * 0.4,
             left: 0,
