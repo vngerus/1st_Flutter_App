@@ -40,7 +40,7 @@ class AppBarPlayer extends StatelessWidget {
     return Container(
       width: double.infinity,
       height: height,
-      color: Colors.black,
+      color: Color(0xff181414),
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -53,10 +53,7 @@ class AppBarPlayer extends StatelessWidget {
                 },
                 child: CircleAvatar(
                   backgroundColor: Colors.pink,
-                  child: Text(
-                    "JT",
-                    style: TextStyle(color: Colors.white),
-                  ),
+                  backgroundImage: AssetImage("assets/img/huh.png"),
                 ),
               ),
               const SizedBox(width: 8),
@@ -74,7 +71,7 @@ class AppBarPlayer extends StatelessWidget {
                   Row(
                     children: const [
                       Text(
-                        "Jayce Talis",
+                        "huh",
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 16,
@@ -126,13 +123,13 @@ class AlbumPlayer extends StatelessWidget {
     return Container(
       width: double.infinity,
       height: height,
-      color: Colors.black,
+      color: Color(0xff181414),
       child: Stack(
         children: [
           Container(
             width: size.width,
             height: 90,
-            color: Colors.redAccent,
+            color: Color(0xff181414),
             child: Filters(),
           ),
           Positioned(
@@ -194,11 +191,19 @@ class AlbumPlayer extends StatelessWidget {
             left: -100,
             child: Transform.rotate(
               angle: -.10,
-              child: Container(
-                width: 200,
-                decoration: BoxDecoration(
-                  color: Colors.white38,
-                  borderRadius: BorderRadius.circular(22),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(22),
+                child: ColorFiltered(
+                  colorFilter: ColorFilter.mode(
+                    Colors.black.withOpacity(0.5),
+                    BlendMode.darken,
+                  ),
+                  child: Image.asset(
+                    "assets/img/etv.jpg",
+                    fit: BoxFit.cover,
+                    width: 200,
+                    height: double.infinity,
+                  ),
                 ),
               ),
             ),
@@ -210,11 +215,19 @@ class AlbumPlayer extends StatelessWidget {
             right: -100,
             child: Transform.rotate(
               angle: .10,
-              child: Container(
-                width: 200,
-                decoration: BoxDecoration(
-                  color: Colors.white70,
-                  borderRadius: BorderRadius.circular(22),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(22),
+                child: ColorFiltered(
+                  colorFilter: ColorFilter.mode(
+                    Colors.black.withOpacity(0.5),
+                    BlendMode.darken,
+                  ),
+                  child: Image.asset(
+                    "assets/img/sopranos.webp",
+                    fit: BoxFit.cover,
+                    width: 200,
+                    height: double.infinity,
+                  ),
                 ),
               ),
             ),
@@ -361,14 +374,17 @@ class _FilterState extends State<Filters> {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         decoration: BoxDecoration(
-          color: isSelected ? Colors.red : Colors.transparent,
-          border: isSelected ? Border.all(color: Colors.red[900]!) : null,
+          color: isSelected ? Colors.red.withOpacity(0.2) : Colors.transparent,
+          border: Border.all(
+            color: isSelected ? Colors.red : Colors.transparent,
+            width: 2,
+          ),
           borderRadius: BorderRadius.circular(20),
         ),
         child: Text(
           label,
           style: TextStyle(
-            color: isSelected ? Colors.white : Colors.white70,
+            color: isSelected ? Colors.red : Colors.white70,
             fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
           ),
         ),
@@ -390,7 +406,7 @@ class ContinueWatching extends StatelessWidget {
     return Container(
       width: double.infinity,
       height: height,
-      color: Colors.green,
+      color: Color(0xff181414),
       child: Stack(
         children: [
           Positioned(
@@ -421,13 +437,16 @@ class ContinueWatching extends StatelessWidget {
                 scrollDirection: Axis.horizontal,
                 child: Row(
                   children: [
-                    SizedBox(width: 10),
-                    _buildEpisodeCard("EP 3", epdWidth, epdWidth),
-                    SizedBox(width: 10),
-                    _buildEpisodeCard("EP 4", epdWidth, epdWidth),
-                    SizedBox(width: 10),
-                    _buildEpisodeCard("EP 5", epdWidth, epdWidth),
-                    SizedBox(width: 20),
+                    const SizedBox(width: 10),
+                    _buildEpisodeCard("EP 4", "assets/img/sopranos6.jpg",
+                        epdWidth, epdHeight),
+                    const SizedBox(width: 10),
+                    _buildEpisodeCard("EP 5", "assets/img/sopranos5.jpg",
+                        epdWidth, epdHeight),
+                    const SizedBox(width: 10),
+                    _buildEpisodeCard("EP 6", "assets/img/sopranos4.avif",
+                        epdWidth, epdHeight),
+                    const SizedBox(width: 20),
                   ],
                 ),
               ),
@@ -438,23 +457,34 @@ class ContinueWatching extends StatelessWidget {
     );
   }
 
-  Widget _buildEpisodeCard(String episode, double width, double height) {
+  Widget _buildEpisodeCard(
+      String episode, String imagePath, double width, double height) {
     return Container(
       width: width,
       height: height,
       decoration: BoxDecoration(
-        color: Colors.grey[700],
         borderRadius: BorderRadius.circular(12),
+        image: DecorationImage(
+          image: AssetImage(imagePath),
+          fit: BoxFit.cover,
+        ),
       ),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Align(
           alignment: Alignment.topLeft,
-          child: Text(
-            episode,
-            style: const TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            decoration: BoxDecoration(
+              color: Colors.black.withOpacity(0.5),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Text(
+              episode,
+              style: const TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
         ),
@@ -692,7 +722,7 @@ class AudioInfo extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: const Text(
                         "Cast: Jayce, Viktor, Vi, Jinx, Caitlyn, Ekko, Potatoe, "
-                        "Nashor, Roshan, Teemo, Evelyn con pasiva, Shaco.",
+                        "Nashor, Roshan, Teemo con pasiva, Evelyn con pasiva, Shaco invisible.",
                         style: TextStyle(
                           fontSize: 14,
                           color: Colors.white54,
