@@ -9,7 +9,7 @@ class AudioPlayer2 extends StatelessWidget {
 
     double heightAppBar = size.height * .15;
     double heightAlbum = size.height * .65;
-    double heightContinue = size.height * .2;
+    double heightContinue = size.height * .1326;
 
     return Scaffold(
       body: Column(
@@ -25,6 +25,7 @@ class AudioPlayer2 extends StatelessWidget {
           ),
         ],
       ),
+      bottomNavigationBar: const Menu(),
     );
   }
 }
@@ -59,13 +60,13 @@ class AlbumPlayer extends StatelessWidget {
       color: Colors.black,
       child: Stack(
         children: [
-          //Filtros - 90
+          // Filtros - 90
           Container(
             width: size.width,
             height: 90,
             color: Colors.redAccent,
           ),
-          //Carrusel img
+          // Carrusel img
           Positioned(
             top: 90,
             child: SizedBox(
@@ -74,7 +75,7 @@ class AlbumPlayer extends StatelessWidget {
               child: carruselImages(),
             ),
           ),
-          //Slider points - 40
+          // Slider points - 40
           Positioned(
             bottom: 10,
             left: size.width * .25,
@@ -162,6 +163,61 @@ class AlbumPlayer extends StatelessWidget {
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(22),
               ),
+              child: Stack(
+                children: [
+                  Positioned(
+                    bottom: 16,
+                    left: 16,
+                    right: 16,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: const [
+                            Text(
+                              "Time to Explore",
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            SizedBox(height: 4),
+                            Text(
+                              "TV Series 2023",
+                              style: TextStyle(
+                                color: Colors.black54,
+                                fontSize: 14,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            IconButton(
+                              onPressed: () {},
+                              icon: const Icon(
+                                Icons.play_circle,
+                                color: Colors.red,
+                                size: 30,
+                              ),
+                            ),
+                            IconButton(
+                              onPressed: () {},
+                              icon: const Icon(
+                                Icons.add_circle,
+                                color: Colors.black,
+                                size: 30,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ],
@@ -180,7 +236,53 @@ class ContinueWatching extends StatelessWidget {
     return Container(
       width: double.infinity,
       height: height,
-      color: Colors.green,
+      color: Colors.red,
+    );
+  }
+}
+
+class Menu extends StatelessWidget {
+  const Menu({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Colors.black,
+      height: 60,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: const [
+          MenuItem(icon: Icons.home, label: "Home"),
+          MenuItem(icon: Icons.star, label: "New"),
+          MenuItem(icon: Icons.bookmark, label: "List"),
+          MenuItem(icon: Icons.download, label: "Download"),
+        ],
+      ),
+    );
+  }
+}
+
+class MenuItem extends StatelessWidget {
+  final IconData icon;
+  final String label;
+
+  const MenuItem({super.key, required this.icon, required this.label});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Icon(
+          icon,
+          color: Colors.white,
+        ),
+        const SizedBox(height: 4),
+        Text(
+          label,
+          style: const TextStyle(color: Colors.white, fontSize: 12),
+        ),
+      ],
     );
   }
 }
