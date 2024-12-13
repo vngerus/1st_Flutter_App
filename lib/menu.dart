@@ -1,4 +1,5 @@
 import 'package:firstflutterapp/audio_player/audio_player.dart';
+import 'package:firstflutterapp/audio_player/audio_player2.dart';
 import 'package:firstflutterapp/bdd/indata.dart';
 import 'package:firstflutterapp/galeria_imgs/galeria_imgs.dart';
 import 'package:firstflutterapp/home_hab.dart';
@@ -23,7 +24,7 @@ class Menu extends StatelessWidget {
                   ),
                 );
               },
-              child: const Text("Gestor de Habitos"),
+              child: const Text("Gestor de Hábitos"),
             ),
             ElevatedButton(
               onPressed: () {
@@ -45,14 +46,14 @@ class Menu extends StatelessWidget {
                   ),
                 );
               },
-              child: const Text("Galeria de imágenes"),
+              child: const Text("Galería de Imágenes"),
             ),
             ElevatedButton(
               onPressed: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => AudioPlayerPage(),
+                    builder: (context) => const AudioPlayerPage(),
                   ),
                 );
               },
@@ -63,11 +64,11 @@ class Menu extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => AudioPlayerPage(),
+                    builder: (context) => const AudioPlayer2(),
                   ),
                 );
               },
-              child: const Text("Reproductor de Audio"),
+              child: const Text("Reproductor de Audio 2"),
             ),
             ElevatedButton(
               onPressed: () {},
@@ -83,5 +84,3 @@ class Menu extends StatelessWidget {
     );
   }
 }
-
-class AudioPlayerPage2 {}
