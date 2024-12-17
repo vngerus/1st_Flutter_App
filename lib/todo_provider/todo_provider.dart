@@ -1,3 +1,4 @@
+import 'package:firstflutterapp/class/task.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -17,16 +18,6 @@ class TaskProvider extends ChangeNotifier {
   }
 }
 
-class Task {
-  String title;
-  bool isComplete;
-
-  Task({
-    required this.title,
-    this.isComplete = false,
-  });
-}
-
 class TodoProvider extends StatelessWidget {
   const TodoProvider({super.key});
 
@@ -42,9 +33,9 @@ class TodoProvider extends StatelessWidget {
         children: [
           Expanded(
             child: ListView.builder(
-              itemCount: taskProvider.tasks.length, // Usar el getter
+              itemCount: taskProvider.tasks.length,
               itemBuilder: (BuildContext context, int i) {
-                final task = taskProvider.tasks[i]; // Usar el getter
+                final task = taskProvider.tasks[i];
 
                 return ListTile(
                   title: Text(
