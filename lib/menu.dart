@@ -1,3 +1,4 @@
+import 'package:firstflutterapp/adopt_app/adopt_app.dart';
 import 'package:firstflutterapp/audio_player/audio_info.dart';
 import 'package:firstflutterapp/audio_player/audio_player.dart';
 import 'package:firstflutterapp/bdd/indata.dart';
@@ -94,6 +95,17 @@ class Menu extends StatelessWidget {
                 );
               },
               child: const Text("Todo - Bloc"),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const AdoptAppPage(),
+                  ),
+                );
+              },
+              child: const Text("Adopt App"),
             ),
           ],
         ),
