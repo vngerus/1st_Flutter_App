@@ -11,8 +11,15 @@ class AnimalBloc extends Bloc<AnimalEvent, AnimalState> {
     on<ToggleFavorite>(_onToggleFavorite);
     on<ChangeFilter>(_onChangeFilter);
   }
-  void _onLoadAnimals(LoadAnimals event, Emitter<AnimalState> emit) {
-    print("_onloadanimals");
+
+  void _onLoadAnimals(LoadAnimals event, Emitter<AnimalState> emit) async {
+    emit(state.copyWith(pageState: AnimalPageState.loading));
+    try {
+      await Future.delayed(const Duration(seconds: 4));
+      emit(state.copyWith(pageState: AnimalPageState.success));
+    } catch (e) {
+      emit(state.copyWith(pageState: AnimalPageState.failure));
+    }
   }
 
   void _onToggleFavorite(ToggleFavorite event, Emitter<AnimalState> emit) {}

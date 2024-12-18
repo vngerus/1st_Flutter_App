@@ -1,4 +1,7 @@
+import 'package:firstflutterapp/adopt_app/bloc/animal_bloc.dart';
+import 'package:firstflutterapp/clases/fundamentos.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AdoptListWidget extends StatelessWidget {
   const AdoptListWidget({super.key});
@@ -13,15 +16,27 @@ class AdoptListWidget extends StatelessWidget {
           top: 48,
           bottom: 48,
         ),
-        child: ListView.builder(
-          scrollDirection: Axis.horizontal,
-          itemCount: 5,
-          itemBuilder: (BuildContext context, int index) {
-            return buildCard(
-              name: "Name",
-              breed: "raza",
-              age: 3,
-            );
+        child: BlocBuilder<AnimalBloc, AnimalState>(
+          builder: (context, state) {
+            if (state.pageState == AnimalPageState.loading) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (state.pageState == AnimalPageState.failure) {
+              return const Center(child: Text("Error al obtener la data"));
+            } else if (state.pageState == AnimalPageState.success) {
+              return ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: 5,
+                itemBuilder: (BuildContext context, int index) {
+                  return buildCard(
+                    name: "Murzik",
+                    breed: "Maine Coon Cat",
+                    age: 3,
+                  );
+                },
+              );
+            } else {
+              return const Center(child: Text("Sin data"));
+            }
           },
         ),
       ),
