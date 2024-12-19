@@ -25,12 +25,16 @@ class AdoptListWidget extends StatelessWidget {
             } else if (state.pageState == AnimalPageState.success) {
               return ListView.builder(
                 scrollDirection: Axis.horizontal,
-                itemCount: 5,
-                itemBuilder: (BuildContext context, int index) {
+                itemCount: state.filteredAnimals.length,
+                itemBuilder: (BuildContext context, int i) {
+                  final animal = state.filteredAnimals[i];
                   return buildCard(
-                    name: "Murzik",
-                    breed: "Maine Coon Cat",
-                    age: 3,
+                    animalId: animal.id,
+                    name: animal.name,
+                    breed: animal.breed,
+                    age: animal.age,
+                    isFavorite: animal.isFavorite,
+                    context: context,
                   );
                 },
               );
@@ -44,18 +48,21 @@ class AdoptListWidget extends StatelessWidget {
   }
 
   Widget buildCard({
+    required String animalId,
     required String name,
     required String breed,
     required int age,
+    required bool isFavorite,
+    required BuildContext context,
   }) {
     return Container(
       width: 260,
       height: 300,
-      padding: EdgeInsets.only(
+      padding: const EdgeInsets.only(
         top: 18,
         bottom: 18,
       ),
-      margin: EdgeInsets.only(
+      margin: const EdgeInsets.only(
         right: 8,
         left: 8,
       ),
@@ -64,40 +71,48 @@ class AdoptListWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           // Avatar
-          CircleAvatar(
+          const CircleAvatar(
             radius: 80,
             backgroundColor: Color(0xFF91C9B9),
           ),
           // Name
           Text(
             name,
-            style: TextStyle(
-                color: Color(0xFF3C2F20),
-                fontSize: 22,
-                fontWeight: FontWeight.w800),
+            style: const TextStyle(
+              color: Color(0xFF3C2F20),
+              fontSize: 22,
+              fontWeight: FontWeight.w800,
+            ),
           ),
           // Breed
           Text(
             breed,
-            style: TextStyle(
-                color: Color(0xFF3C2F20),
-                fontSize: 14,
-                fontWeight: FontWeight.w600),
+            style: const TextStyle(
+              color: Color(0xFF3C2F20),
+              fontSize: 14,
+              fontWeight: FontWeight.w600,
+            ),
           ),
           // Age
           Text(
             "$age years",
-            style: TextStyle(
-                color: Color(0xFF3C2F20),
-                fontSize: 12,
-                fontWeight: FontWeight.w400),
+            style: const TextStyle(
+              color: Color(0xFF3C2F20),
+              fontSize: 12,
+              fontWeight: FontWeight.w400,
+            ),
           ),
           // Fav
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              context.read<AnimalBloc>().add(
+                    ToggleFavorite(animalId),
+                  );
+            },
             icon: Icon(
-              Icons.favorite_border,
+              isFavorite ? Icons.favorite_sharp : Icons.favorite_border,
               size: 40,
+              color: isFavorite ? Colors.red : Colors.black,
             ),
           ),
         ],

@@ -3,7 +3,7 @@ class AnimalModel {
   final String name;
   final String breed;
   final int age;
-  final int imageUrl;
+  final String imageUrl;
   final String type;
   final bool isFavorite;
 
@@ -17,7 +17,7 @@ class AnimalModel {
     this.isFavorite = false,
   });
 
-  AnimalModel copyWith() {
+  AnimalModel copyWith({bool? isFavorite}) {
     return AnimalModel(
       id: id,
       name: name,

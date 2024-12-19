@@ -71,6 +71,8 @@ class AdoptAppBarWidget extends StatelessWidget {
   }
 }
 
+
+
 // backgroudColor: #DBE8DF
 // orange: #EE6D2D
 // brow: #3C2F20
